@@ -1,0 +1,39 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: matrix
+  labels:
+      app: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: matrix-s
+          image: 077517822523.dkr.ecr.us-east-2.amazonaws.com/witcher:master
+          ports:
+          - containerPort: 3000
+...
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: matrix
+spec:
+  type: LoadBalancer
+  selector:
+    app: web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+...
+
+
